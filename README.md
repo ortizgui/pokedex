@@ -16,17 +16,6 @@ The goal is to implement improvements over time to train my skills.
 docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=<<SQL_PASSWORD>>' -e 'MSSQL_PID=Express' --name mssql -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
 ```
 
-## Running the project
-
-Go to the .\pokedex directory and run the commands:
-
-```
-dotnet restore
-dotnet run
-```
-
-**restore** will restore nuget's dependencies and **run** will run the project.
-
 ## Configure database access
 
 Configure **connectionString** on .\pokedex\appSettings.json.
@@ -38,3 +27,13 @@ When connectionString is already configured, the next step is let EF configure t
 dotnet ef database update
 ```
 
+## Running the project
+
+Go to the .\pokedex directory and run the commands:
+
+```
+dotnet restore
+dotnet run
+```
+
+**restore** will restore nuget's dependencies and **run** will run the project.

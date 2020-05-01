@@ -8,5 +8,6 @@ namespace pokedex.Services.PokemonServices
     public interface IPokemonService
     {
          Task<ServiceResponse<List<GetPokemonDto>>> GetAllPokemons();
+         Task<ServiceResponse<GetPokemonDto>> AddPokemon(AddPokemonDto newPokemon);
     }
 }

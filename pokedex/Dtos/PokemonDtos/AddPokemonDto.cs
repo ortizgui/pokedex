@@ -1,6 +1,6 @@
 namespace pokedex.Dtos.PokemonDtos
 {
-    public class GetPokemonDto
+    public class AddPokemonDto
     {
         public string Name { get; set; }
         public int Number { get; set; }

@@ -9,6 +9,7 @@ namespace pokedex
         public AutoMapperProfile()
         {
             CreateMap<Pokemon, GetPokemonDto>();
+            CreateMap<AddPokemonDto, Pokemon>();
         }
     }
 }

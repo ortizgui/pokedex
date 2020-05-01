@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using pokedex.Dtos.PokemonDtos;
 using pokedex.Services.PokemonServices;
 
 namespace pokedex.Controllers
@@ -16,9 +17,15 @@ namespace pokedex.Controllers
         }
 
         [HttpGet("GetAll")]
-        public async Task<IActionResult> GetTask()
+        public async Task<IActionResult> GetAllPokemon()
         {
             return Ok(await _pokemonService.GetAllPokemons());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddPokemon(AddPokemonDto newPokemon)
+        {
+            return Ok(await _pokemonService.AddPokemon(newPokemon));
         }
 
     }
