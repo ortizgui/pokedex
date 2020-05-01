@@ -3,6 +3,7 @@ namespace pokedex.Models
     public class Pokemon
     {
         public int Id { get; set; }
+        public string Name { get; set; }
         public int Number { get; set; }
         public string Species { get; set; }
         public int Hp { get; set; }
