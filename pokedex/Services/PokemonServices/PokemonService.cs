@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,6 +35,38 @@ namespace pokedex.Services.PokemonServices
                 await _context.Pokemons
                     .FirstAsync(p => p.Number == pokemon.Number));
             serviceResponse.Message = "You find a new Pokémon! Nice job!";
+
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<GetPokemonDto>> DeletePokemon(int pokemonNumber)
+        {
+            ServiceResponse<GetPokemonDto> serviceResponse = new ServiceResponse<GetPokemonDto>();
+
+            try
+            {
+                Pokemon pokemon =
+                await _context.Pokemons.FirstOrDefaultAsync(p => p.Number == pokemonNumber);
+
+                if (pokemon != null)
+                {
+                    _context.Pokemons.Remove(pokemon);
+                    await _context.SaveChangesAsync();
+
+                    serviceResponse.Data = _mapper.Map<GetPokemonDto>(pokemon);
+                    serviceResponse.Message = "Pokémon has been successfully removed from database.";
+                }
+                else
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = $"Whops! The Pokémon #{pokemonNumber} has not been found.";
+                }
+            }
+            catch(Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
 
             return serviceResponse;
         }

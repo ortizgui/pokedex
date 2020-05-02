@@ -9,5 +9,6 @@ namespace pokedex.Services.PokemonServices
     {
          Task<ServiceResponse<List<GetPokemonDto>>> GetAllPokemons();
          Task<ServiceResponse<GetPokemonDto>> AddPokemon(AddPokemonDto newPokemon);
+         Task<ServiceResponse<GetPokemonDto>> DeletePokemon(int pokemonNumber);
     }
 }
