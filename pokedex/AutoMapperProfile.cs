@@ -10,6 +10,7 @@ namespace pokedex
         {
             CreateMap<Pokemon, GetPokemonDto>();
             CreateMap<AddPokemonDto, Pokemon>();
+            CreateMap<UpdatePokemonDto, Pokemon>();
         }
     }
 }

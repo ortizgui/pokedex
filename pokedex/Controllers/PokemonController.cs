@@ -42,5 +42,18 @@ namespace pokedex.Controllers
             return Ok(response);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdatePokemon(UpdatePokemonDto updatePokemon)
+        {
+            ServiceResponse<GetPokemonDto> response = await _pokemonService.UpdatePokemon(updatePokemon);
+
+            if(response.Data == null)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
+        }
+
     }
 }

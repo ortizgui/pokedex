@@ -89,5 +89,46 @@ namespace pokedex.Services.PokemonServices
 
             return serviceResponse;
         }
+
+        public async Task<ServiceResponse<GetPokemonDto>> UpdatePokemon(UpdatePokemonDto updatedPokemon)
+        {
+            ServiceResponse<GetPokemonDto> serviceResponse = new ServiceResponse<GetPokemonDto>();
+
+            try
+            {
+                Pokemon pokemon = await _context.Pokemons.FirstOrDefaultAsync(p => p.Number == updatedPokemon.Number);
+
+                if(pokemon == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = $"Pokémon #{pokemon.Number} not been found.";;
+                }
+                else
+                {
+                    pokemon.Name = updatedPokemon.Name;
+                    pokemon.Number = updatedPokemon.Number;
+                    pokemon.Species = updatedPokemon.Species;
+                    pokemon.Hp = updatedPokemon.Hp;
+                    pokemon.Attack = updatedPokemon.Attack;
+                    pokemon.Defense = updatedPokemon.Defense;
+                    pokemon.SpAttack = updatedPokemon.SpAttack;
+                    pokemon.SpDefense = updatedPokemon.SpDefense;
+                    pokemon.Speed = updatedPokemon.Speed;
+
+                    _context.Pokemons.Update(pokemon);
+                    await _context.SaveChangesAsync();
+
+                    serviceResponse.Data = _mapper.Map<GetPokemonDto>(pokemon);
+                    serviceResponse.Message = $"Info about Pokémon #{pokemon.Number} has been updated.";
+                }
+            }
+            catch(Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+            return serviceResponse;
+        }
     }
 }
