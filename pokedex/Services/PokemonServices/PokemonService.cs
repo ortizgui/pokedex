@@ -20,6 +20,52 @@ namespace pokedex.Services.PokemonServices
             _mapper = mapper;
             _context = context;
         }
+        public async Task<ServiceResponse<GetPokemonDto>> GetPokemonByNumber(int pokemonNumber)
+        {
+            ServiceResponse<GetPokemonDto> serviceResponse = new ServiceResponse<GetPokemonDto>();
+
+            Pokemon DbPokemon = await _context.Pokemons
+                    .FirstOrDefaultAsync(p => p.Number == pokemonNumber);
+            
+            if(DbPokemon == null)
+            {
+                using(var client = newHttpClient())  
+                {  
+                    client.BaseAddress = newUri("http://localhost:55587/");  
+                    client.DefaultRequestHeaders.Accept.Clear();  
+                    client.DefaultRequestHeaders.Accept.Add(newMediaTypeWithQualityHeaderValue("application/json"));  
+                    //GET Method  
+                    HttpResponseMessage response = awaitclient.GetAsync("api/Department/1");  
+                    if (response.IsSuccessStatusCode)  
+                    {  
+                        Departmentdepartment = awaitresponse.Content.ReadAsAsync < Department > ();  
+                        Console.WriteLine("Id:{0}\tName:{1}", department.DepartmentId, department.DepartmentName);  
+                        Console.WriteLine("No of Employee in Department: {0}", department.Employees.Count);  
+                    }  
+                    else  
+                    {  
+                        Console.WriteLine("Internal server Error");  
+                    }  
+                }  
+            }
+
+            if(DbPokemon != null)
+            {
+                serviceResponse.Data = _mapper.Map<GetPokemonDto>(DbPokemon);
+                serviceResponse.Message = $"Here all info about {DbPokemon.Name}.";
+            }
+            else
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Sorry, we can't find nothing about this Pokémon. Try another one.";
+            }
+            
+            return serviceResponse;
+        }
+        public async Task<ServiceResponse<GetPokemonDto>> GetPokemonByName(string pokemonName)
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task<ServiceResponse<GetPokemonDto>> AddPokemon(AddPokemonDto newPokemon)
         {

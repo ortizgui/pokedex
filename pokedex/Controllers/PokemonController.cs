@@ -17,43 +17,23 @@ namespace pokedex.Controllers
             _pokemonService = pokemonService;
         }
 
-        [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAllPokemon()
+        [HttpGet("{pokemon}")]
+        public async Task<IActionResult> GetPokemon(string pokemon)
         {
-            return Ok(await _pokemonService.GetAllPokemons());
-        }
+            ServiceResponse<GetPokemonDto> serviceResponse = new ServiceResponse<GetPokemonDto>();
 
-        [HttpPost]
-        public async Task<IActionResult> AddPokemon(AddPokemonDto newPokemon)
-        {
-            return Ok(await _pokemonService.AddPokemon(newPokemon));
-        }
+            int number;
 
-        [HttpDelete("{pokemonNumber}")]
-        public async Task<IActionResult> DeletePokemon(int pokemonNumber)
-        {
-            ServiceResponse<GetPokemonDto> response = await _pokemonService.DeletePokemon(pokemonNumber);
-
-            if(response.Data == null)
+            if(int.TryParse(pokemon, out number))
             {
-                return NotFound(response);
+                serviceResponse = await _pokemonService.GetPokemonByNumber(number);
+            }
+            else
+            {
+                serviceResponse = await _pokemonService.GetPokemonByName(pokemon);
             }
 
-            return Ok(response);
+            return Ok(serviceResponse);
         }
-
-        [HttpPut]
-        public async Task<IActionResult> UpdatePokemon(UpdatePokemonDto updatePokemon)
-        {
-            ServiceResponse<GetPokemonDto> response = await _pokemonService.UpdatePokemon(updatePokemon);
-
-            if(response.Data == null)
-            {
-                return NotFound(response);
-            }
-
-            return Ok(response);
-        }
-
     }
 }
